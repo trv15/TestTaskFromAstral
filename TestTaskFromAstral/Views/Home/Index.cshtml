@@ -1,0 +1,75 @@
+﻿@model TestTaskFromAstral.Models.MainObjectViewModel
+@using TestTaskFromAstral.HtmlHelpers
+
+@{
+    ViewBag.Title = "Вакансии со всего мира на hh.ru";
+}
+
+<div class="col-xs-12" style="margin:20px;">
+    <form method="get" action="\Home\Index\">
+        <div class="input-group">
+            <span class="input-group-btn"><a href="/Home/Index" class="btn btn-default">На главную</a></span>
+            <input type="text" class="form-control" name="vakancyName" value="@ViewBag.vakancyName" placeholder="Поиск по названию" style="min-width:100%!important">
+            <span class="input-group-btn"><button class="btn btn-default" type="submit">Найти</button></span>
+        </div>
+    </form>
+</div>
+<h4 class="text-info" style="margin:20px;">Список активных вакансии с сайта hh.ru</h4>
+
+<div class="panel panel-default" style="padding:10px">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <br />
+    @if (Model != null)
+    {
+        if (Model.Items != null)
+        {
+            if (Model.Items.Count > 0)
+            {
+                foreach (var item in Model.Items)
+                {
+                    if (item.Type.Name == "Открытая")
+                    {
+                        <div class="col-xs-12 panel">
+                            <div class="row" style="margin:10px; margin-top:0px!important">
+                                <h4><a href="@Url.Action("CardVakancyView", "Home", new { vakancyId = item.Id })" class="text-info">@item.Name</a></h4>
+                                @if (item.Published_At != null)
+                                {
+                                    <div>Дата публикации: @DateTime.Parse(item.Published_At)</div>
+                                }
+                                @if (item.Salary != null)
+                                {
+                                    <div>Оплата: @item.Salary.From @item.Salary.Currency</div>
+                                }
+                                @if (item.Address != null)
+                                {
+                                    <div>@item.Address.City @item.Address.Street @item.Address.Building</div>
+                                }
+                                @if (item.Description != null)
+                                {
+                                    <div>@string.Join(String.Empty, item.Description.Take(35))...</div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
+            else
+            {
+                <h2 class="text-info">Не найдено активных вакансии</h2>
+            }
+        }
+
+    }
+    else
+    {
+        <h2 class="text-danger text-center">Активные вакансии отсутствуют, проверьте соединение с интернетом</h2>
+    }
+
+</div>
+
+<div class="btn-group pull-right "> @Html.PageLinks(Model, x => Url.Action("Index", new { vakancyName = @ViewBag.vakancyName, pageNumber = x }))</div>
+

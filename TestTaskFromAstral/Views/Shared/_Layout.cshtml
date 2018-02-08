@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title – приложение ASP.NET</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Вакансии сайта hh.ru", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @*<li>@Html.ActionLink("Загрузить вакансии", "Index", "Home")</li>*@
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    <footer style="margin-top:10px;">
+        <div class="navbar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 hidden-xs text-center">
+                        <p style="font-size:xx-small">
+                            ©2017 Сайт не является публичной офертой, Обращаем ваше внимание на то, что данный Интернет-сайт, носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями Статьи 437 Гражданского кодекса Российской Федерации. Производитель товаров оставляет за собой право на внесение изменений или дополнений в инструкции, технические характеристики и габариты товаров и упаковок, технические описания, комплектацию товара в одностороннем порядке без предварительного уведомления. Для получения подробной информации о характеристиках и стоимости товаров, пожалуйста, обращайтесь к менеджерам по продажам по указанным в контактах телефонам или электронной почте.<br />
+                            По всем техническим вопросам относительно сайта, пишите по адресу trv15@rambler.ru, Руслан Таймасов
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <p>&copy; @DateTime.Now.Year – ASP.NET MVC</p>
+        </div>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

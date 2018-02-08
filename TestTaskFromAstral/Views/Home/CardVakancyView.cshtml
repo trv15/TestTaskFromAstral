@@ -1,0 +1,70 @@
+﻿@model TestTaskFromAstral.Models.VacancyViewModel
+
+@{
+    ViewBag.Title = "Вакансия";
+}
+
+<h3>Подробное описание вакансии</h3>
+
+<div class="panel panel-body panel-default">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <br />
+    @if (Model != null)
+    {
+        <div class="col-xs-12">
+            <div class="pull-left">
+                <br />
+                <h4 class="text-info">@Model.Name</h4>
+                <hr />
+                @if (Model.Id != null)
+                {
+                    <div>Номер: @Model.Id</div>
+                }
+                @if (Model.Employment != null)
+                {
+                    <div>Тип занятости: @Model.Employment.Name</div>
+                }
+                @if (Model.Published_At != null)
+                {
+                    <div>Дата публикации: @DateTime.Parse(Model.Published_At)</div>
+                }
+                @if (Model.Salary != null)
+                {
+                    <div>Заработная плата от: @Model.Salary.From @if(@Model.Salary.To != null) { <span>до</span> @Model.Salary.To} @if (Model.Salary.Currency == "RUR") { <span>Руб.</span>}</div>
+                    if(Model.Salary.Gross != null & Model.Salary.Gross == "true")
+                    { <div>Заработная плата указана с вычетом налогов</div> }
+                    else
+                    {
+                        <div>Заработная плата указана без вычета налогов</div>
+                    }
+                }
+                @if (Model.Address != null)
+                {
+                    <div>Адрес: @Model.Address.City @Model.Address.Street @Model.Address.Building</div>
+                    if(Model.Address.Description != null)
+                    {
+                        <div>Подробсности: @Model.Address.Description</div>
+                    }
+                }
+                @if (Model.Contacts != null)
+                {
+                    <div>Контактное лицо: @Model.Contacts.Name Email: @Model.Contacts.Email </div>
+                        <span>Телефоны для связи:</span>
+                        for (int i = 0; i < Model.Contacts.Phones.Count; i++)
+                        {
+                            <span>
+                                <span>+</span> @Model.Contacts.Phones[i].Country @Model.Contacts.Phones[i].City @Model.Contacts.Phones[i].Number
+                            </span>
+                        }
+                }
+
+                @if (Model.Description != null)
+                {
+                    <div>Описание: <div>@Model.Description</div></div>
+                }
+                <a href=@Request.UrlReferrer> <span class="btn btn-primary">Назад</span></a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    }
+</div>

@@ -3,24 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Infrastructure.Data.Manager;
 using Infrastructure.Data.Interfaces;
 using Infrastructure.Data.Context;
 using Domain.Core;
-using Infrastructure.Data.Validator;
+using Infrastructure.Data.Repositories;
 
 namespace Infrastructure.Data.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public static ApplicationContext _context;
-        private VacancyManager _vacancyManager;
-        private TypeVakancyManager _typeVakancyManager;
-        private SalaryManager _salaryManager;
-        private PhonesManager _phonesManager;
-        private EmploymentManager _employmentManager;
-        private ContactsManager _contactsManager;
-        private AddressManager _addressManager;
+        public ApplicationContext _context;
+        private IRepositoryGeneric<Vacancy, string> _vacancyRepository;
+        private IRepositoryGeneric<TypeVacancy, string> _typeVakancyRepository;
+        private IRepositoryGeneric<Salary, string> _salaryRepository;
+        private IRepositoryGeneric<Phones, Guid> _phonesRepository;
+        private IRepositoryGeneric<Employment, string> _employmentRepository;
+        private IRepositoryGeneric<Contacts, string> _contactsRepository;
+        private IRepositoryGeneric<Address, string> _addressRepository;
 
         public UnitOfWork(IApplicationContext context)
         {
@@ -28,14 +27,13 @@ namespace Infrastructure.Data.UnitOfWork
                 throw new ArgumentNullException(nameof(context));
             _context = (ApplicationContext)context;
 
-            _vacancyManager = new VacancyManager(_context);
-            _typeVakancyManager = new TypeVakancyManager(_context);
-            _salaryManager = new SalaryManager(_context);
-            _phonesManager = new PhonesManager(_context);
-            _employmentManager = new EmploymentManager(_context);
-            _contactsManager = new ContactsManager(_context);
-            _addressManager = new AddressManager(_context);
-
+             _vacancyRepository = new RepositoryGeneric<Vacancy, string>(_context);
+             _typeVakancyRepository = new RepositoryGeneric<TypeVacancy, string>(_context);
+             _salaryRepository = new RepositoryGeneric<Salary, string>(_context);
+             _phonesRepository = new RepositoryGeneric<Phones, Guid>(_context);
+             _employmentRepository = new RepositoryGeneric<Employment, string>(_context);
+             _contactsRepository = new RepositoryGeneric<Contacts, string>(_context);
+             _addressRepository = new RepositoryGeneric<Address, string>(_context);
         }
 
         #region Properties
@@ -50,91 +48,94 @@ namespace Infrastructure.Data.UnitOfWork
             }
         }
 
-        public VacancyManager VacancyManager
+        public IRepositoryGeneric<Vacancy, string> VacancyRepository
         {
             get
             {
                 this.ThrowIfDisposed();
-                if (_vacancyManager == null || _context == null)
+                if (_vacancyRepository == null || _context == null)
                     throw new NotSupportedException();
 
-                return _vacancyManager;
-            }
-        }
-        
-        public TypeVakancyManager TypeVakancyManager
-        {
-            get
-            {
-                this.ThrowIfDisposed();
-                if (_typeVakancyManager == null || _context == null)
-                    throw new NotSupportedException();
-
-                return _typeVakancyManager;
+                return _vacancyRepository;
             }
         }
 
-        public SalaryManager SalaryManager
+        public IRepositoryGeneric<TypeVacancy, string> TypeVakancyRepository
         {
             get
             {
                 this.ThrowIfDisposed();
-                if (_salaryManager == null || _context == null)
+                if (_typeVakancyRepository == null || _context == null)
                     throw new NotSupportedException();
 
-                return _salaryManager;
+                return _typeVakancyRepository;
             }
         }
 
-        public PhonesManager PhonesManager
+        public IRepositoryGeneric<Salary, string> SalaryRepository
         {
             get
             {
                 this.ThrowIfDisposed();
-                if (_phonesManager == null || _context == null)
+                if (_salaryRepository == null || _context == null)
                     throw new NotSupportedException();
 
-                return _phonesManager;
+                return _salaryRepository;
             }
         }
 
-        public EmploymentManager EmploymentManager
+        public IRepositoryGeneric<Phones, Guid> PhonesRepository
         {
             get
             {
                 this.ThrowIfDisposed();
-                if (_employmentManager == null || _context == null)
+                if (_phonesRepository == null || _context == null)
                     throw new NotSupportedException();
 
-                return _employmentManager;
+                return _phonesRepository;
             }
         }
 
-        public ContactsManager ContactsManager
+        public IRepositoryGeneric<Employment, string> EmploymentRepository
         {
             get
             {
                 this.ThrowIfDisposed();
-                if (_contactsManager == null || _context == null)
+                if (_employmentRepository == null || _context == null)
                     throw new NotSupportedException();
 
-                return _contactsManager;
+                return _employmentRepository;
             }
         }
 
-        public AddressManager AddressManagerv
+        public IRepositoryGeneric<Contacts, string> ContactsRepository
         {
             get
             {
                 this.ThrowIfDisposed();
-                if (_addressManager == null || _context == null)
+                if (_contactsRepository == null || _context == null)
                     throw new NotSupportedException();
 
-                return _addressManager;
+                return _contactsRepository;
+            }
+        }
+
+        public IRepositoryGeneric<Address, string> AddressRepository
+        {
+            get
+            {
+                this.ThrowIfDisposed();
+                if (_addressRepository == null || _context == null)
+                    throw new NotSupportedException();
+
+                return _addressRepository;
             }
         }
         #endregion Properties
-
+        /// <summary>
+        /// Сохранить все изменения
+        /// </summary>
+        /// <returns></returns>
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
@@ -155,26 +156,20 @@ namespace Infrastructure.Data.UnitOfWork
         {
             if (!this._disposed)
             {
-                if (disposing)
-                {
-                    if (_context != null)
-                        _context = null;
-                    _vacancyManager.Dispose();
-                    _typeVakancyManager.Dispose();
-                    _salaryManager.Dispose();
-                    _phonesManager.Dispose();
-                    _employmentManager.Dispose();
-                    _contactsManager.Dispose();
-                    _addressManager.Dispose();
 
-                    _vacancyManager = null;
-                    _typeVakancyManager = null;
-                    _salaryManager = null;
-                    _phonesManager = null;
-                    _employmentManager = null;
-                    _contactsManager = null;
-                    _addressManager = null;
+                if (_context.GetBoolDisposeContext == false && disposing)
+                {
+                    _context.Dispose();
+                    _context = null;
                 }
+                _vacancyRepository = null;
+                _typeVakancyRepository = null;
+                _salaryRepository = null;
+                _phonesRepository = null;
+                _employmentRepository = null;
+                _contactsRepository = null;
+                _addressRepository = null;
+
                 this._disposed = true;
             }
         }

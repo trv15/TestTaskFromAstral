@@ -9,15 +9,15 @@
     <form method="get" action="\Home\Index\">
         <div class="input-group">
             <span class="input-group-btn"><a href="/Home/Index" class="btn btn-default">На главную</a></span>
-            <input type="text" class="form-control" name="vakancyName" value="@ViewBag.vakancyName" placeholder="Поиск по названию" style="min-width:100%!important">
+            <input type="text" class="form-control" name="vacancyName" value="@ViewBag.vacancyName" placeholder="Поиск по названию" style="min-width:100%!important">
             <span class="input-group-btn"><button class="btn btn-default" type="submit">Найти</button></span>
         </div>
     </form>
 </div>
 <h4 class="text-info" style="margin:20px;">Список активных вакансии с сайта hh.ru</h4>
-
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 <div class="panel panel-default" style="padding:10px">
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
     <br />
     @if (Model != null)
     {
@@ -31,7 +31,7 @@
                     {
                         <div class="col-xs-12 panel">
                             <div class="row" style="margin:10px; margin-top:0px!important">
-                                <h4><a href="@Url.Action("CardVakancyView", "Home", new { vakancyId = item.Id })" class="text-info">@item.Name</a></h4>
+                                <h4><a href="@Url.Action("CardVacancyView", "Home", new { vacancyId = item.Id })" class="text-info">@item.Name</a></h4>
                                 @if (item.Published_At != null)
                                 {
                                     <div>Дата публикации: @DateTime.Parse(item.Published_At)</div>
@@ -46,7 +46,7 @@
                                 }
                                 @if (item.Description != null)
                                 {
-                                    <div>@string.Join(String.Empty, item.Description.Take(35))...</div>
+                                    <div>@string.Join(String.Empty, item.Description.Take(15))...</div>
                                 }
                             </div>
                         </div>
@@ -71,5 +71,5 @@
 
 </div>
 
-<div class="btn-group pull-right "> @Html.PageLinks(Model, x => Url.Action("Index", new { vakancyName = @ViewBag.vakancyName, pageNumber = x }))</div>
+<div class="btn-group pull-right "> @Html.PageLinks(Model, x => Url.Action("Index", new { vacancyName = @ViewBag.vacancyName, pageNumber = x }))</div>
 

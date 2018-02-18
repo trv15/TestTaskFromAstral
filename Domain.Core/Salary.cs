@@ -10,18 +10,29 @@ namespace Domain.Core
 {
     public class Salary
     {
+        /// <summary>
+        /// связь один к одному с вакансией, Salary id - это id-вакансии
+        /// </summary>
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         [ForeignKey("Vacancy")]
         public string Id { get; set; }
+        /// <summary>
+        /// зарплата от
+        /// </summary>
+        public string From { get; set; }
+        /// <summary>
+        /// зарплата до
+        /// </summary>
+        public string To { get; set; }
+        /// <summary>
+        /// удержаны ли налоги
+        /// </summary>
+        public string Gross { get; set; }
+        /// <summary>
+        /// валюта при расчете
+        /// </summary>
+        public string Currency { get; set; }
 
-        public string From { get; set; }//от
-
-        public string To { get; set; }//до
-
-        public string Gross { get; set; }//налоги удержаны
-
-        public string Currency { get; set; }//рубль или $
-
-        public virtual Vacancy Vacancy { get; set; }//один к одному
+        public virtual Vacancy Vacancy { get; set; }
     }
 }

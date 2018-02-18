@@ -11,7 +11,7 @@ namespace Infrastructure.Data.Interfaces
     public interface IApplicationContext : IDisposable
     {
          DbSet<Vacancy> Vacancys { get; set; }
-         DbSet<TypeVakancy> TypeVakancys { get; set; }
+         DbSet<TypeVacancy> TypeVacancys { get; set; }
          DbSet<Salary> Salarys { get; set; }
          DbSet<Employment> Employments { get; set; }
          DbSet<Contacts> Contacts { get; set; }

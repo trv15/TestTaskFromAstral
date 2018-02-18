@@ -10,12 +10,17 @@ namespace Domain.Core
 {
     public class Employment
     {
+        /// <summary>
+        ///id из hh.ru
+        /// </summary>
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string Id { get; set; }//id из hh.ru
+        public string Id { get; set; }
+        /// <summary>
+        ///частиная полная занятость 
+        /// </summary>
+        public string Name { get; set; }
 
-        public string Name { get; set; }//частиная полная
-
-        public virtual ICollection<Vacancy> Vacancy { get; set; }//телефоны
+        public virtual ICollection<Vacancy> Vacancy { get; set; }
 
         public Employment()
         {

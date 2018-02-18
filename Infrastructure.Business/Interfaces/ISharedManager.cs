@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Data.Interfaces
+namespace Infrastructure.Business.Interfaces
 {
     public interface ISharedManager<TEntity, TKey, TResult> : IDisposable where TEntity : class where TResult : class
     {
         IQueryable<TEntity> QueryableSet { get; }
 
         Task<TResult> CreateAsync(TEntity entity);
+
+        Task<TResult> CreateRangeAsync(IEnumerable<TEntity> entity);
 
         Task<TResult> UpdateAsync(TEntity entity);
 

@@ -10,28 +10,48 @@ namespace Domain.Core
 {
     public class Vacancy
     {
+        /// <summary>
+        /// id вакансии устанавливается из hh.ru
+        /// </summary>
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string Id { get; set; }// id из hh.ru
-
-        public string Name { get; set; }// название вакансии
-
-        public string Published_At { get; set; }//дата публикации
-
-        public string Description { get; set; }// описание вакансии
-
-        public string Archived { get; set; }// описание вакансии
-
+        public string Id { get; set; }
+        /// <summary>
+        /// название вакансии
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// дата публикации
+        /// </summary>
+        public string Published_At { get; set; }
+        /// <summary>
+        /// описание вакансии
+        /// </summary>
+        public string Description { get; set; }
+        /// <summary>
+        /// в архиве ли вакансия
+        /// </summary>
+        public string Archived { get; set; }
+        /// <summary>
+        ///тип вакансии(открытая закрытая)
+        /// </summary>
         public string TypeVakancyId { get; set; }
-        public virtual TypeVakancy TypeVakancy { get; set; }//тип вакансии(открытая закрытая)
-
+        public virtual TypeVacancy TypeVakancy { get; set; }
+        /// <summary>
+        ///тип занятости
+        /// </summary>
         public string EmploymentId { get; set; }
-        public virtual Employment Employment { get; set; }//тип занятости
-
-
-        public virtual Address Address { get; set; }//адрес
-
-        public virtual Salary Salary { get; set; }//зарплата
-
-        public virtual Contacts Contacts { get; set; }//контактные данные
+        public virtual Employment Employment { get; set; }
+        /// <summary>
+        ///зарплата указанная
+        /// </summary>
+        public virtual Salary Salary { get; set; }
+        /// <summary>
+        ///контактные данные
+        /// </summary>
+        public virtual Contacts Contacts { get; set; }
+        /// <summary>
+        ///адрес
+        /// </summary>
+        public virtual Address Address { get; set; }
     }
 }

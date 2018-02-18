@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Data.Validator
+namespace Infrastructure.Business.Validator
 {
     public class OperationResult
     {
@@ -13,7 +13,10 @@ namespace Infrastructure.Data.Validator
 
         private static OperationResult _result = new OperationResult(true);
 
-        //конструктор если нет ошибок(По умолчанию сразу установлено в true - _result)
+        /// <summary>
+        ///Данный конструктор если нет ошибок(По умолчанию сразу установлено в true - _result)
+        /// </summary>
+        /// <param name="success"></param>
         protected OperationResult(bool success)
         {
             if (Errors == null)
@@ -22,7 +25,9 @@ namespace Infrastructure.Data.Validator
             this.Succeeded = success;
         }
 
-        //свойство если операция прошла успешно то получаем по умолчанию - new OperationResult(true)
+        /// <summary>
+        ///Данное свойство если операция прошла успешно то получаем по умолчанию - new OperationResult(true)
+        /// </summary>
         public static OperationResult GetSuccess
         {
             get
@@ -31,13 +36,20 @@ namespace Infrastructure.Data.Validator
             }
         }
 
-        //Свойство если операция прошла не успешно
+        /// <summary>
+        /// Свойство если операция прошла не успешно
+        /// </summary>
+        /// <param name="errors"></param>
+        /// <returns></returns>
         public static OperationResult GetFailed(List<ValidationException> errors)
         {
             return new OperationResult(errors);
         }
 
-        //конструктор если есть ошибки 
+        /// <summary>
+        /// Конструктор если есть ошибки 
+        /// </summary>
+        /// <param name="errors"></param>
         public OperationResult(IEnumerable<ValidationException> errors)
         {
             if (errors == null)

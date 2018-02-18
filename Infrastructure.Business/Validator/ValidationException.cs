@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Data.Validator
+namespace Infrastructure.Business.Validator
 {
     public class ValidationException : Exception
     {

@@ -8,16 +8,21 @@ using System.Threading.Tasks;
 
 namespace Domain.Core
 {
-    public class TypeVakancy
+    public class TypeVacancy
     {
+        /// <summary>
+        ///id из hh.ru(open closed)
+        /// </summary>
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string Id { get; set; }//id из hh.ru(open closed)
+        public string Id { get; set; }
+        /// <summary>
+        ///открытая, закрытая
+        /// </summary>
+        public string Name { get; set; }
 
-        public string Name { get; set; }//открытая, закрытая
+        public virtual ICollection<Vacancy> Vacancy { get; set; }
 
-        public virtual ICollection<Vacancy> Vacancy { get; set; }//телефоны
-
-        public TypeVakancy()
+        public TypeVacancy()
         {
             this.Vacancy = (ICollection<Vacancy>)new List<Vacancy>();
         }

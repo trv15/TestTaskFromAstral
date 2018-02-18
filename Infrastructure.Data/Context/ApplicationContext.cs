@@ -18,30 +18,40 @@ namespace Infrastructure.Data.Context
 {
     public class ApplicationContext : DbContext, IApplicationContext
     {
-        /*Статический контруктор инициилизирующий БД*/
+        /// <summary>
+        ///Статический контруктор инициилизирующий БД
+        /// </summary>
         static ApplicationContext()
         {
             Database.SetInitializer<ApplicationContext>(new DbInitializer());
         }
 
-        /*Конструктор по умолчанию*/
+        /// <summary>
+        ///Конструктор по умолчанию
+        /// </summary>
         public ApplicationContext() : base("ApplicationContext") { }
 
         public DbSet<Vacancy> Vacancys { get; set; }
-        public DbSet<TypeVakancy> TypeVakancys { get; set; }
+        public DbSet<TypeVacancy> TypeVacancys { get; set; }
         public DbSet<Salary> Salarys { get; set; }
         public DbSet<Employment> Employments { get; set; }
         public DbSet<Contacts> Contacts { get; set; }
         public DbSet<Phones> Phones { get; set; }
         public DbSet<Address> Address { get; set; }
 
-        /*Получаем вновь созданный контекст данных(использование может привести к ошибкам в если получить несколько экземпляров)*/
+        /// <summary>
+        ///Получаем вновь созданный контекст данных(использование может привести к ошибкам в если получить несколько экземпляров)
+        /// </summary>
+        /// <returns></returns>
         public static ApplicationContext getNewAppContext()
         {
             return new ApplicationContext();
         }
 
-        /*Переопределяем логику сопоставления моделей(классов) и таблиц Entity Framework с помощью FluentApi*/
+        /// <summary>
+        ///Переопределяем логику сопоставления моделей(классов) и таблиц Entity Framework с помощью FluentApi
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             if (modelBuilder == null)
@@ -49,19 +59,24 @@ namespace Infrastructure.Data.Context
             /*Настраиваем имена таблиц, с которой будет сопоставлен конкретный тип сущности, методом ToTable()
              и свойства первичного ключа для выбранного типа сущности методом HasKey()*/
             EntityTypeConfiguration<Vacancy> _VacancyTable = modelBuilder.Entity<Vacancy>().HasKey(u => u.Id).ToTable("VacancysHeadHunter");
-            EntityTypeConfiguration<TypeVakancy> _TypeVakancyTable = modelBuilder.Entity<TypeVakancy>().HasKey(i => i.Id).ToTable("TypeVakancys");
+            EntityTypeConfiguration<TypeVacancy> _TypeVakancyTable = modelBuilder.Entity<TypeVacancy>().HasKey(i => i.Id).ToTable("TypeVakancys");
             EntityTypeConfiguration<Salary> _SalaryTable = modelBuilder.Entity<Salary>().HasKey(r => r.Id).ToTable("Salarys");//
             EntityTypeConfiguration<Employment> _EmploymentTable = modelBuilder.Entity<Employment>().HasKey(x => x.Id).ToTable("Employments");
             EntityTypeConfiguration<Contacts> _ContactsTable = modelBuilder.Entity<Contacts>().HasKey(z => z.Id).ToTable("Contacts");//
             EntityTypeConfiguration<Phones> _PhonesTable = modelBuilder.Entity<Phones>().HasKey(k => k.Id).ToTable("Phones");
-            EntityTypeConfiguration<Address> _AddressTable = modelBuilder.Entity<Address>().HasKey(l => l.Id).ToTable("Address");//
+            EntityTypeConfiguration<Address> _AddressTable = modelBuilder.Entity<Address>().HasKey(k => k.Id).ToTable("Address");
 
             _VacancyTable.Property(u => u.Id).IsRequired().HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("VakancyIdIndex") { IsUnique = true }));
             _TypeVakancyTable.Property(u => u.Id).IsRequired().HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("TypeVakancyIdIndex") { IsUnique = true }));
             _EmploymentTable.Property(u => u.Id).IsRequired().HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("EmploymentIdIndex") { IsUnique = true }));
         }
 
-        /*Добавляем функционал по валидации*/
+        /// <summary>
+        /// Функционал по валидации
+        /// </summary>
+        /// <param name="entityEntry"></param>
+        /// <param name="items"></param>
+        /// <returns></returns>
         protected override DbEntityValidationResult ValidateEntity(DbEntityEntry entityEntry, IDictionary<object, object> items)
         {
             if (entityEntry != null && entityEntry.State == EntityState.Added)
@@ -76,10 +91,10 @@ namespace Infrastructure.Data.Context
                             "Описание: Вакансия с ID: " + vacancy.Id + " уже сохранена в БД"));
                 }
 
-                TypeVakancy typeVakancy = entityEntry.Entity as TypeVakancy;
+                TypeVacancy typeVakancy = entityEntry.Entity as TypeVacancy;
                 if (typeVakancy != null)
                 {
-                    if (this.TypeVakancys.Any<TypeVakancy>(u => string.Equals(u.Id, typeVakancy.Id)))
+                    if (this.TypeVacancys.Any<TypeVacancy>(u => string.Equals(u.Id, typeVakancy.Id)))
                         source.Add(new DbValidationError("Свойство " + nameof(typeVakancy.Id) + " вызвало ошибку, метод \"ValidateEntity\" класса \"ApplicationContext\"",
                             "Описание: Тип вакансии " + vacancy.Id + " уже сохранена в БД"));
                 }
@@ -100,7 +115,9 @@ namespace Infrastructure.Data.Context
             return base.ValidateEntity(entityEntry, items);
         }
 
-        /*Проводим первичную инициализвцию БД*/
+        /// <summary>
+        /// Функция для первичной инициализвцию БД
+        /// </summary>
         public class DbInitializer : DropCreateDatabaseIfModelChanges<ApplicationContext>
         {
             protected override void Seed(ApplicationContext DB)
@@ -128,7 +145,7 @@ namespace Infrastructure.Data.Context
             {
                 return this._disposed;
             }
-        }
+        } 
 
         private void DisposeFromAll(bool disposing)
         {
@@ -138,7 +155,7 @@ namespace Infrastructure.Data.Context
                 {
                     //Освобождаем управляемые ресурсы
                     this.Vacancys = null;
-                    this.TypeVakancys = null;
+                    this.TypeVacancys = null;
                     this.Salarys = null;
                     this.Employments = null;
                     this.Contacts = null;

@@ -208,7 +208,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\CardVakancyView.cshtml" />
+    <Content Include="Views\Home\CardVacancyView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -230,6 +230,10 @@
     <ProjectReference Include="..\Domain.Core\Domain.Core.csproj">
       <Project>{abf79834-6b2c-4235-8dc9-e15a4a42c801}</Project>
       <Name>Domain.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure.Business\Infrastructure.Business.csproj">
+      <Project>{d5cb7458-316d-437c-955e-3a6a71f3eb3e}</Project>
+      <Name>Infrastructure.Business</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure.Data\Infrastructure.Data.csproj">
       <Project>{5cf53804-d4e5-4c11-ae28-4911507749fd}</Project>

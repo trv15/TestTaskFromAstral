@@ -11,13 +11,15 @@ namespace Infrastructure.Data.Interfaces
     {
         IQueryable<TEntity> QueryableEntitySet { get; }
 
-        DbContext Context { get; }
+        IApplicationContext Context { get; }
 
         DbSet<TEntity> DbEntitySet { get; }
 
         Task<TEntity> FindByIdAsync(TKey id);
 
         void Create(TEntity entity);
+
+        void CreateRange(IEnumerable<TEntity> entity);
 
         void Delete(TEntity entity);
 

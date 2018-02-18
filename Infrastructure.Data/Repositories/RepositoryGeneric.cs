@@ -21,7 +21,7 @@ namespace Infrastructure.Data.Repositories
             this._dbEntitySet = _context.Set<TEntity>();
         }
 
-        public DbContext Context
+        public IApplicationContext Context
         {
             get
             {
@@ -63,6 +63,11 @@ namespace Infrastructure.Data.Repositories
         public virtual void Update(TEntity entity)
         {
             this._context.Entry<TEntity>(entity).State = EntityState.Modified;
+        }
+
+        public void CreateRange(IEnumerable<TEntity> entity)
+        {
+            this._dbEntitySet.AddRange(entity);
         }
     }
 }
